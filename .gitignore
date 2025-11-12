@@ -1,0 +1,22 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.env/
+.venv/
+venv/
+env/
+
+# IDE / editor settings
+.vscode/
+.idea/
+
+# System / temporary files
+*.log
+*.tmp
+*.DS_Store
+
+# Project-specific folders to ignore
+task/
+data/result/
