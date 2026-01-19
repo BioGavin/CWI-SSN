@@ -1,6 +1,7 @@
 # Python cache
 __pycache__/
 *.py[cod]
+*.egg-info/
 
 # Virtual environments
 .env/
@@ -20,3 +21,4 @@ env/
 # Project-specific folders to ignore
 task/
 data/result/
+

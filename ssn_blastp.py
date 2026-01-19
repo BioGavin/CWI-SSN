@@ -1,6 +1,6 @@
 # ssn_blast.py
+import subprocess
 from pathlib import Path
-from Bio.Blast.Applications import NcbimakeblastdbCommandline, NcbiblastpCommandline
 
 BLAST_OUTFMT = (
     "6 qseqid sseqid pident length mismatch gapopen qstart qend "
@@ -10,8 +10,9 @@ BLAST_OUTFMT = (
 def make_db(fasta: str, db_dir: str = "results/blast") -> str:
     fasta = Path(fasta); db_dir = Path(db_dir); db_dir.mkdir(parents=True, exist_ok=True)
     db = db_dir / "seqdb"
-    NcbimakeblastdbCommandline(dbtype="prot", input_file=str(fasta),
-                               parse_seqids=True, out=str(db))()
+    cmd = ["makeblastdb", "-dbtype", "prot", "-input_type", "fasta",
+           "-in", str(fasta), "-parse_seqids", "-out", str(db)]
+    subprocess.run(cmd, check=True, capture_output=True)
     
     return str(db)
 
@@ -26,12 +27,10 @@ def all_vs_all_blastp(
     max_hsps: int = 1,
 ) -> str:
     out = Path(out_file); out.parent.mkdir(parents=True, exist_ok=True)
-    cl = NcbiblastpCommandline(
-        query=str(fasta), db=str(db), out=str(out),
-        outfmt=BLAST_OUTFMT, evalue=evalue, matrix=matrix,
-        seg=seg, max_hsps=max_hsps, num_threads=threads
-    )
-    cl()[0]
+    cmd = ["blastp", "-query", str(fasta), "-db", str(db), "-out", str(out),
+           "-outfmt", BLAST_OUTFMT, "-evalue", str(evalue), "-matrix", matrix,
+           "-seg", seg, "-max_hsps", str(max_hsps), "-num_threads", str(threads)]
+    subprocess.run(cmd, check=True, capture_output=True)
     return str(out)
 
 if __name__ == "__main__":
