@@ -23,7 +23,7 @@ mamba activate modifiedSSN
 ### Install from source
 
 ```bash
-git clone https://github.com/yourusername/CWI-SSN.git
+git clone https://github.com/BioGavin/CWI-SSN.git
 cd CWI-SSN
 pip install .
 ```
